@@ -55,6 +55,23 @@ def get_html_data(url):
     html_content = html_data.text.replace('670px', '100%').replace('getQueryString(\'amount\')', url.split('=')[-1])
     return html_content, encoding, status_code
 
+def get_contact_html_data(url):
+    """
+    写文件,默认操作类型为w，编码为GBK
+    :param file_name:文件名
+    :param operation_type:操作类型：w：写入
+    :param encoding:
+    :return:
+    """
+    # 爬取网页的URL
+    print(url)
+    payload = {}
+
+    html_data = requests.request("GET", url, headers=CONFIG.headers_2, data=payload)
+    encoding = html_data.apparent_encoding
+    status_code = html_data.status_code
+    html_content = html_data.text
+    return html_content, encoding, status_code
 
 def write_file(html_content, file_name, encoding, mode):
     """
