@@ -35,10 +35,6 @@ def get_html_data(url):
     :param encoding:
     :return:
     """
-    # 请求头,让网站监测是浏览器
-    headers = {
-        'user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3573.0 Safari/537.36',
-    }
     # 爬取网页的URL
     html_data = requests.get(url, headers=CONFIG.headers_2, timeout=30)
 

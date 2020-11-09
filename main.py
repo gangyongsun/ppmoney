@@ -99,6 +99,6 @@ def generate_html_result(csv_file_name, csv_file):
 
 
 if __name__ == "__main__":
-    csv_file_name = '自助投20180828-1'
+    csv_file_name = '自助投20180828-1-contact'
     csv_file = csv.reader(open('./csv/' + csv_file_name + '.csv', 'r', encoding='utf-8-sig'))
     generate_html_result(csv_file_name, csv_file)

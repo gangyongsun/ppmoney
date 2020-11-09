@@ -3,3 +3,5 @@ ppmoney
 .idea
 venv
 *__pycache__
+*.csv
+*.html
