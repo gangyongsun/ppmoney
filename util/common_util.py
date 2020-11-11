@@ -10,6 +10,25 @@ sys.path.append(rootPath)
 import config.config as CONFIG
 
 
+def walk_file(path):
+    """
+    遍历文件夹拿文件
+    :param path: 主文件夹
+    :return: 文件名数组
+    """
+    csv_file_array = []
+    for root, dirs, files in os.walk(path):
+        # root 表示当前正在访问的文件夹路径
+        # dirs 表示该文件夹下的子目录名list
+        # files 表示该文件夹下的文件list
+        for file in files:
+            full_file_name = os.path.join(root, file)
+            file_name = os.path.basename(full_file_name)
+            if file_name.endswith('.csv'):
+                csv_file_array.append(full_file_name)
+    return csv_file_array
+
+
 def mkdir(path):
     """
     创建文件夹目录
@@ -55,6 +74,7 @@ def get_html_data(url):
     html_content = html_data.text.replace('670px', '100%').replace('getQueryString(\'amount\')', url.split('=')[-1])
     return html_content, encoding, status_code
 
+
 def get_contact_html_data(url):
     """
     写文件,默认操作类型为w，编码为GBK
@@ -64,7 +84,8 @@ def get_contact_html_data(url):
     :return:
     """
     # 爬取网页的URL
-    print(url)
+    # 如果没有生成合同，则通过此URL可以拿到
+    # print(url)
     payload = {}
 
     html_data = requests.request("GET", url, headers=CONFIG.headers_2, data=payload)
@@ -72,6 +93,7 @@ def get_contact_html_data(url):
     status_code = html_data.status_code
     html_content = html_data.text
     return html_content, encoding, status_code
+
 
 def write_file(html_content, file_name, encoding, mode):
     """
