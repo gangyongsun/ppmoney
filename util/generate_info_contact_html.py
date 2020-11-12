@@ -121,4 +121,4 @@ def generate_html_result(file_path):
         # 调用生成出借人信息html函数
         generate_info_html(csv_file_name, data_array)
         # 调用生成出借人合同html函数
-        generate_contact_html(csv_file_name, data_array)
+        # generate_contact_html(csv_file_name, data_array)
