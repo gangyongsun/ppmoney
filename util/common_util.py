@@ -55,13 +55,6 @@ def mkdir(path):
 
 
 def get_html_data(url):
-    """
-    写文件,默认操作类型为w，编码为GBK
-    :param file_name:文件名
-    :param operation_type:操作类型：w：写入
-    :param encoding:
-    :return:
-    """
     # 请求头,让网站监测是浏览器
     headers = {
         'user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3573.0 Safari/537.36',
@@ -76,13 +69,6 @@ def get_html_data(url):
 
 
 def get_contact_html_data(url):
-    """
-    写文件,默认操作类型为w，编码为GBK
-    :param file_name:文件名
-    :param operation_type:操作类型：w：写入
-    :param encoding:
-    :return:
-    """
     # 爬取网页的URL
     # 如果没有生成合同，则通过此URL可以拿到
     # print(url)

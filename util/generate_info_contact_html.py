@@ -17,13 +17,12 @@ sys.path.append(rootPath)
 
 import config.config as CONFIG
 
-# csv文件解析失败记录目录
-csv_analysis_failed_folder = CONFIG.csv_analysis_failed_folder
 
-
-def generate_contact_html(csv_file_name, data_array):
+def generate_contact_html(success_folder, failed_folder, csv_file_name, data_array):
     """
     生成出借人合同html
+    :param success_folder: 执行成功目录
+    :param failed_folder: 执行失败目录
     :param csv_file_name: 读取的csv文件名
     :param data_array: 需要的信息数组
     :return:
@@ -47,15 +46,16 @@ def generate_contact_html(csv_file_name, data_array):
         contract_html_content = request_contract_data[0]
         contract_encoding = request_contract_data[1]
         contract_status_code = request_contract_data[2]
+        # print('抓取结果：' + str(contract_status_code))
         # 获取当前编码
-        if contract_status_code == 403:
+        if contract_status_code == 404:
+            print('合同URL：' + sub_url)
             csv_line = borrower_no + ',' + borrower_value + ',' + borrower_family_name + ',' + borrower_info_url + ',' + borrower_contract_url
             print(csv_line + '：写入失败')
-            write_file(csv_line + '\n', csv_analysis_failed_folder + '/' + csv_file_name + '-failed.csv',
-                       encoding='utf-8', mode='a')
+            write_file(csv_line + '\n', failed_folder + '/' + csv_file_name + '-failed.csv', encoding='utf-8', mode='a')
         else:
             # 文件夹
-            folder_name = CONFIG.info_contact_result_folder + '/' + csv_file_name + '/' + str(borrower_no) + '-' + str(
+            folder_name = success_folder + '/' + csv_file_name + '/' + str(borrower_no) + '-' + str(
                 borrower_value) + '-' + str(borrower_family_name).replace('*', '')
             mkdir(folder_name)
 
@@ -64,9 +64,11 @@ def generate_contact_html(csv_file_name, data_array):
             write_file(contract_html_content, borrower_contract_file_name, encoding=contract_encoding, mode='w')
 
 
-def generate_info_html(csv_file_name, data_array):
+def generate_info_html(success_folder, failed_folder, csv_file_name, data_array):
     """
     生成出借人信息html
+    :param success_folder: 执行成功目录
+    :param failed_folder: 执行失败目录
     :param csv_file_name: 读取的csv文件名
     :param data_array: 需要的信息数组
     :return:
@@ -92,11 +94,11 @@ def generate_info_html(csv_file_name, data_array):
     if status_code == 403:
         csv_line = borrower_no + ',' + borrower_value + ',' + borrower_family_name + ',' + borrower_info_url + ',' + borrower_contract_url
         print(csv_line + '：写入失败')
-        write_file(csv_line + '\n', csv_analysis_failed_folder + '/' + csv_file_name + '-failed.csv', encoding='utf-8',
+        write_file(csv_line + '\n', failed_folder + '/' + csv_file_name + '-failed.csv', encoding='utf-8',
                    mode='a')
     else:
         # 文件夹
-        folder_name = CONFIG.info_contact_result_folder + '/' + csv_file_name + '/' + str(borrower_no) + '-' + str(
+        folder_name = success_folder + '/' + csv_file_name + '/' + str(borrower_no) + '-' + str(
             borrower_value) + '-' + str(borrower_family_name).replace('*', '')
         mkdir(folder_name)
 
@@ -105,9 +107,11 @@ def generate_info_html(csv_file_name, data_array):
         write_file(html_content, borrower_info_file_name, encoding=encoding, mode='w')
 
 
-def generate_html_result(file_path):
+def generate_html_result(success_folder, failed_folder, file_path):
     """
     统一调用
+    :param success_folder: 执行成功目录
+    :param failed_folder: 执行失败目录
     :param file_path: csv文件全路径名
     :return:
     """
@@ -119,6 +123,6 @@ def generate_html_result(file_path):
         data_array = [line_data[0], line_data[3], line_data[5], line_data[18], line_data[19]]
         # print(data_array)
         # 调用生成出借人信息html函数
-        generate_info_html(csv_file_name, data_array)
+        generate_info_html(success_folder, failed_folder, csv_file_name, data_array)
         # 调用生成出借人合同html函数
-        # generate_contact_html(csv_file_name, data_array)
+        # generate_contact_html(success_folder, failed_folder, csv_file_name, data_array)

@@ -24,5 +24,5 @@ if __name__ == '__main__':
     p1.join()
     p2.join()
 
-    print("进程一：", p1.name)
-    print("进程二：", p2.name)
+    print("进程一：", p1.name, ' 执行结束')
+    print("进程二：", p2.name, ' 执行结束')

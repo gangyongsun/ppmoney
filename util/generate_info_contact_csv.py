@@ -36,14 +36,11 @@ credit_csv_file = CONFIG.credit_csv_file
 # 总配置信息（需要用户自己收集）
 csv_file = csv.reader(open(credit_csv_file, 'r', encoding='utf-8-sig'))
 
-# 程序生成的自助投csv文件目录
-credit_generated_csv_folder = CONFIG.credit_generated_csv_folder
-
 # 每页条数（最大100，再调高无用）
 pageSize = 100
 
 
-def generate_credit_csv():
+def generate_credit_csv(credit_generated_csv_folder):
     """
     生成债权明细出借人csv文件，用于程序获取数据
     :return:
@@ -82,7 +79,6 @@ def generate_credit_csv():
 
             # 抓取json数据
             result_array = get_contact_html_data(url)
-
             # 获得json字符串
             json_content = result_array[0]
 
@@ -111,8 +107,7 @@ def generate_credit_csv():
 
                 # 出借人合同完整URL
                 borrower_contact_url = cat_url_1 + str(
-                    investId) + cat_url_2 + asset_id + cat_url_3 + shar_id + cat_url_4 + str(_type) + cat_url_5 + str(
-                    project_type) + cat_url_6 + str(assetType)
+                    investId) + cat_url_2 + asset_id + cat_url_3 + shar_id + cat_url_4 + str(_type) + cat_url_5 + str(project_type) + cat_url_6 + str(assetType)
                 # print(borrower_contact_url)
                 item['borrower_contact_url'] = borrower_contact_url
 
