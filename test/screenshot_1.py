@@ -6,20 +6,25 @@ import os
 import time
 
 
-def get_image(url, pic_name):
+def screenshot(url, pic_name):
+    """
+    截图
+    :param url: URL路径
+    :param pic_name: 保存的图片名
+    :return:
+    """
     # chromedriver的路径
-    chromedriver = r"./chromedriver.exe"
+    chromedriver = "/Applications/Google Chrome.app/Contents/MacOS/chromedriver"
     os.environ["webdriver.chrome.driver"] = chromedriver
 
-    # 设置chrome开启的模式，headless就是无界面模式
-    # 一定要使用这个模式，不然截不了全页面，只能截到你电脑的高度
+    # 设置chrome开启的模式，headless就是无界面模式(一定要使用这个模式，不然截不了全页面，只能截到你电脑的高度)
     chrome_options = Options()
     chrome_options.add_argument('headless')
     driver = webdriver.Chrome(chromedriver, chrome_options=chrome_options)
 
     # 控制浏览器写入并转到链接
     driver.get(url)
-    time.sleep(1)
+    # time.sleep(1)
 
     # 接下来是全屏的关键，用js获取页面的宽高，如果有其他需要用js的部分也可以用这个方法
     width = driver.execute_script("return document.documentElement.scrollWidth")
@@ -28,7 +33,7 @@ def get_image(url, pic_name):
 
     # 将浏览器的宽高设置成刚刚获取的宽高
     driver.set_window_size(width, height)
-    time.sleep(1)
+    # time.sleep(1)
 
     # 截图并关掉浏览器
     driver.save_screenshot(pic_name)
@@ -36,6 +41,6 @@ def get_image(url, pic_name):
 
 
 # 你输入的参数
-url = 'https://www.baidu.com'
-pic_name = r'./image.png'
+url = 'https://china.nba.com/'
+pic_name = './image.png'
 get_image(url, pic_name)

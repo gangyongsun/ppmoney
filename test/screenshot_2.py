@@ -38,7 +38,7 @@ def read_excel(filename):
                     $('.follow-me').siblings().remove();
                     $('img.ui.image').siblings().remove();
                     """)
-            browser.save_screenshot("图片保存路径\\图片名称.png")
+            browser.save_screenshot("./图片名称.png")
             browser.close()
 
 
