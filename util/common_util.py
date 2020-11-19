@@ -1,6 +1,10 @@
 import requests
 import os
 import sys
+import time
+
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 
 curPath = os.path.abspath(os.path.dirname(__file__))
 rootPath = os.path.split(curPath)[0]
@@ -8,6 +12,18 @@ rootPath = os.path.split(curPath)[0]
 sys.path.append(rootPath)
 
 import config.config as CONFIG
+
+
+def format_time(date_time, source_format, target_format):
+    """
+    格式化时间字符串
+    :param date_time: 时间字符串
+    :param source_format: 原格式
+    :param target_format: 目标格式
+    :return:
+    """
+    time_struct = time.strptime(date_time, source_format)
+    return time.strftime(target_format, time_struct)
 
 
 def walk_file(path):
@@ -70,14 +86,17 @@ def get_html_data(url):
 
 def get_contact_html_data(url):
     # 爬取网页的URL
-    # 如果没有生成合同，则通过此URL可以拿到
-    # print(url)
-    payload = {}
+    response = requests.get(url, headers=CONFIG.headers_2)
+    new_header = response.headers
+    new_url = response.url
+    print(new_url)
+    # print(response.cookies)
+    # new_response = requests.get(new_url, headers=new_header)
+    # print(new_response.text)
 
-    html_data = requests.request("GET", url, headers=CONFIG.headers_2, data=payload)
-    encoding = html_data.apparent_encoding
-    status_code = html_data.status_code
-    html_content = html_data.text
+    encoding = response.apparent_encoding
+    status_code = response.status_code
+    html_content = response.text
     return html_content, encoding, status_code
 
 
@@ -97,3 +116,37 @@ def write_file(html_content, file_name, encoding, mode):
         file.write(i)
     # 关闭文件
     file.close()
+
+
+def screenshot(url, pic_name):
+    """
+    截图
+    :param url: URL路径
+    :param pic_name: 保存的图片名
+    :return:
+    """
+    # chromedriver的路径
+    chromedriver = "/Applications/Google Chrome.app/Contents/MacOS/chromedriver"
+    os.environ["webdriver.chrome.driver"] = chromedriver
+
+    # 设置chrome开启的模式，headless就是无界面模式(一定要使用这个模式，不然截不了全页面，只能截到你电脑的高度)
+    chrome_options = Options()
+    chrome_options.add_argument('headless')
+    driver = webdriver.Chrome(chromedriver, chrome_options=chrome_options)
+
+    # 控制浏览器写入并转到链接
+    driver.get(url)
+    # time.sleep(1)
+
+    # 接下来是全屏的关键，用js获取页面的宽高，如果有其他需要用js的部分也可以用这个方法
+    width = driver.execute_script("return document.documentElement.scrollWidth")
+    height = driver.execute_script("return document.documentElement.scrollHeight")
+    print(width, height)
+
+    # 将浏览器的宽高设置成刚刚获取的宽高
+    driver.set_window_size(width, height)
+    # time.sleep(1)
+
+    # 截图并关掉浏览器
+    driver.save_screenshot(pic_name)
+    driver.close()

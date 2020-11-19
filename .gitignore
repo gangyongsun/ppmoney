@@ -2,5 +2,8 @@ csv
 ppmoney
 .idea
 venv
+*.csv
+*.png
+*.log
 *__pycache__
 *.html
