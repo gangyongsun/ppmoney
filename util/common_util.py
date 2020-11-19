@@ -89,9 +89,10 @@ def get_contact_html_data(url):
     response = requests.get(url, headers=CONFIG.headers_2)
     new_header = response.headers
     new_url = response.url
+    print(new_url)
     # print(response.cookies)
-    new_response = requests.get(new_url, headers=new_header)
-    print(new_response.text)
+    # new_response = requests.get(new_url, headers=new_header)
+    # print(new_response.text)
 
     encoding = response.apparent_encoding
     status_code = response.status_code
