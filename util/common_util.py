@@ -86,13 +86,20 @@ def get_html_data(url):
 
 def get_contact_html_data(url):
     # 爬取网页的URL
-    response = requests.get(url, headers=CONFIG.headers_2)
+    session = requests.session()
+    response = session.get(url, headers=CONFIG.headers_2, allow_redirects=False)
+
+    # print(session.cookies['PPmoney.AUTH'])
+
     new_header = response.headers
+    new_header['Cookie'] = 'PPmoney.AUTH=' + session.cookies['PPmoney.AUTH']
     new_url = response.url
+
+    print(new_header)
     print(new_url)
-    # print(response.cookies)
-    # new_response = requests.get(new_url, headers=new_header)
-    # print(new_response.text)
+
+    new_response = session.get(new_url, headers=new_header)
+    print(new_response.text)
 
     encoding = response.apparent_encoding
     status_code = response.status_code
