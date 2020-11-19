@@ -2,6 +2,7 @@ csv
 ppmoney
 .idea
 venv
+*cookie*
 *.csv
 *.png
 *.log
