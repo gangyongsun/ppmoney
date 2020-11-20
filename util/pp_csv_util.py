@@ -8,7 +8,7 @@ import time
 import pandas as pd
 from itertools import islice
 
-from util.common_util import get_contact_html_data
+from util.common_util import get_html_data
 from util.common_util import format_time
 from util.common_util import mkdir
 
@@ -55,11 +55,11 @@ def generate_basic_csv(total_record, project_type, target_folder):
             # 毫秒级时间戳
             timestamp = int(round(time.time() * 1000))
             url = 'https://www.ppmoney.com/stepup/InvestProjectList?type=1&pageIndex=' + str(curr_page_no) + '&pageSize=' + str(page_size) + '&projectType=' + str(project_type) + '&_=' + str(timestamp)
-            result = get_contact_html_data(url)
+            result = get_html_data(url)
             json_data = json.loads(result[0])
             for sub_data in json_data['Data']['Rows']:
                 credit_url = 'https://www.ppmoney.com/stepup/CreditRightList?id=' + str(sub_data['InvestId']) + '&pageIndex=1&pageSize=6&projectType=' + str(sub_data['ProjectType']) + '&_=' + str(timestamp)
-                credit_result = get_contact_html_data(credit_url)
+                credit_result = get_html_data(credit_url)
                 credit_json_data = json.loads(credit_result[0])
                 total_count = credit_json_data['Data']['TotalCount']
                 invest_date_time = format_time(sub_data['InvestDate'], "%Y-%m-%d %H:%M", "%Y-%m-%d-%H-%M")
@@ -109,7 +109,7 @@ def generate_credit_csv(basic_csv_file, target_folder):
             url = credit_url_1 + str(id_value) + credit_url_2 + str(page_index) + credit_url_3 + str(page_size) + credit_url_4 + str(project_type_value) + CONFIG.credit_timestamp + str(timestamp)
 
             # 抓取json数据
-            result_array = get_contact_html_data(url)
+            result_array = get_html_data(url)
             # 获得json字符串
             json_content = result_array[0]
             # json转dict

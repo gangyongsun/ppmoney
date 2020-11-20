@@ -2,7 +2,8 @@ import requests
 import os
 import sys
 import time
-
+import urllib3
+import random
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
@@ -12,6 +13,8 @@ rootPath = os.path.split(curPath)[0]
 sys.path.append(rootPath)
 
 import config.config as CONFIG
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 def format_time(date_time, source_format, target_format):
@@ -71,47 +74,77 @@ def mkdir(path):
 
 
 def get_html_data(url):
-    # 请求头,让网站监测是浏览器
-    headers = {
-        'user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3573.0 Safari/537.36',
-    }
-    # 爬取网页的URL
-    session = requests.Session()
-    html_data = session.get(url, headers=headers, timeout=30)
-    session.close()
-    encoding = html_data.apparent_encoding
-    status_code = html_data.status_code
-    html_content = html_data.text.replace('670px', '100%').replace('getQueryString(\'amount\')', url.split('=')[-1])
-    return html_content, encoding, status_code
-
-
-def get_contact_html(url):
     """
-    获取合同，解决重定向问题
-    :param url:合同地址
+    爬取网页的URL
+    :param url:
     :return:
     """
-    session_1 = requests.Session()
-    # 第一次请求，不重定向
-    response_1 = session_1.get(url, headers=CONFIG.headers_2, verify=False, allow_redirects=False)
-    # 获取重定向后的地址
-    final_url = response_1.headers["Location"]
-    session_1.close()
-
-    # 获取合同
-    session_2 = requests.Session()
-    # 第二次请求
-    response_2 = session_2.get(final_url, headers=CONFIG.headers_2, verify=False, allow_redirects=False)
-    session_2.close()
-    return response_2.text, response_2.encoding, response_2.status_code
-
-
-def get_contact_html_data(url):
-    html_data = requests.request("GET", url, headers=CONFIG.headers_2)
+    session = requests.Session()
+    html_data = session.request("GET", url, headers=CONFIG.headers)
+    session.close()
     encoding = html_data.apparent_encoding
     status_code = html_data.status_code
     html_content = html_data.text
     return html_content, encoding, status_code
+
+
+def get_contact_html(url, url_bak):
+    """
+    获取合同，解决重定向问题
+    :param url:合同地址
+    :param url_bak:扩展合同地址
+    :return:
+    """
+    # 首先直接获取合同，不重定向
+    response = get_contact_html_no_redirection(url, url_bak)
+    # 如果是重定向URL，则需要另外的访问方式
+    if response[2] == 302:
+        session_1 = requests.Session()
+        # 第一次请求，用来获取location地址，即重定向后的URL
+        response_1 = session_1.get(url, headers=CONFIG.headers, verify=False, allow_redirects=False)
+        if 'Location' in response_1.headers.keys():
+            # 获取重定向后的地址URL
+            final_url = response_1.headers["Location"]
+        else:
+            # 第一次请求
+            response_1 = session_1.get(url_bak, headers=CONFIG.headers, verify=False, allow_redirects=False)
+            if 'Location' in response_1.headers.keys():
+                # 获取重定向后的地址
+                # TODO 如果token过期，这个URL获取就是错的，这里需要对程序进行严谨性处理
+                final_url = response_1.headers["Location"]
+                session_1.close()
+            else:
+                return '', '', 404
+
+        # 获取合同
+        session_2 = requests.Session()
+        # 第二次请求
+        response_2 = session_2.get(final_url, headers=CONFIG.headers, verify=False, allow_redirects=False)
+        session_2.close()
+        return response_2.text, response_2.encoding, response_2.status_code
+    else:
+        return response
+
+
+def get_contact_html_no_redirection(url, url_bak):
+    """
+    (无重定向)
+    :param url: 合同地址
+    :param url_bak: 扩展合同地址
+    :return:
+    """
+    session = requests.Session()
+    html_data = session.request("GET", url, headers=CONFIG.headers, verify=False, allow_redirects=False)
+    content = html_data.text
+    encoding = html_data.apparent_encoding
+    status_code = html_data.status_code
+    if '协议生成中' in content:
+        html_data = session.request("GET", url_bak, headers=CONFIG.headers, verify=False, allow_redirects=False)
+        content = html_data.text
+        encoding = html_data.apparent_encoding
+        status_code = html_data.status_code
+    session.close()
+    return content, encoding, status_code
 
 
 def write_file(html_content, file_name, encoding, mode):
