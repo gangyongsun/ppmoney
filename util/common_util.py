@@ -76,34 +76,41 @@ def get_html_data(url):
         'user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3573.0 Safari/537.36',
     }
     # 爬取网页的URL
-    html_data = requests.get(url, headers=headers, timeout=30)
-
+    session = requests.Session()
+    html_data = session.get(url, headers=headers, timeout=30)
+    session.close()
     encoding = html_data.apparent_encoding
     status_code = html_data.status_code
     html_content = html_data.text.replace('670px', '100%').replace('getQueryString(\'amount\')', url.split('=')[-1])
     return html_content, encoding, status_code
 
 
+def get_contact_html(url):
+    """
+    获取合同，解决重定向问题
+    :param url:合同地址
+    :return:
+    """
+    session_1 = requests.Session()
+    # 第一次请求，不重定向
+    response_1 = session_1.get(url, headers=CONFIG.headers_2, verify=False, allow_redirects=False)
+    # 获取重定向后的地址
+    final_url = response_1.headers["Location"]
+    session_1.close()
+
+    # 获取合同
+    session_2 = requests.Session()
+    # 第二次请求
+    response_2 = session_2.get(final_url, headers=CONFIG.headers_2, verify=False, allow_redirects=False)
+    session_2.close()
+    return response_2.text, response_2.encoding, response_2.status_code
+
+
 def get_contact_html_data(url):
-    # 爬取网页的URL
-    session = requests.session()
-    response = session.get(url, headers=CONFIG.headers_2, allow_redirects=False)
-
-    # print(session.cookies['PPmoney.AUTH'])
-
-    new_header = response.headers
-    new_header['Cookie'] = 'PPmoney.AUTH=' + session.cookies['PPmoney.AUTH']
-    new_url = response.url
-
-    print(new_header)
-    print(new_url)
-
-    new_response = session.get(new_url, headers=new_header)
-    print(new_response.text)
-
-    encoding = response.apparent_encoding
-    status_code = response.status_code
-    html_content = response.text
+    html_data = requests.request("GET", url, headers=CONFIG.headers_2)
+    encoding = html_data.apparent_encoding
+    status_code = html_data.status_code
+    html_content = html_data.text
     return html_content, encoding, status_code
 
 
