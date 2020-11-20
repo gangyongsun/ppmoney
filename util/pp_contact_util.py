@@ -8,6 +8,7 @@ import csv
 
 from util.common_util import mkdir
 from util.common_util import get_html_data
+from util.common_util import get_contact_html
 from util.common_util import get_contact_html_data
 from util.common_util import write_file
 
@@ -23,7 +24,7 @@ import config.config as CONFIG
 
 def generate_contact(url, folder_name):
     # 抓取合同网页内容
-    request_contract_data = get_contact_html_data(url)
+    request_contract_data = get_contact_html(url)
     contract_html_content = request_contract_data[0]
     contract_encoding = request_contract_data[1]
     contract_status_code = request_contract_data[2]
@@ -114,7 +115,7 @@ def generate_info_html(success_folder, failed_folder, csv_file_name, data_array)
         write_file(csv_line + '\n', failed_folder + '/' + csv_file_name + '-failed.csv', encoding='utf-8', mode='a')
     else:
         # 文件夹
-        folder_name = success_folder + '/' + csv_file_name + '/' + str(borrower_no) + '-' + str(borrower_value) + '-' + str(borrower_family_name).replace('*', '')
+        folder_name = success_folder + '/' + csv_file_name + '/出借人信息/' + str(borrower_no) + '-' + str(borrower_value) + '-' + str(borrower_family_name)
         mkdir(folder_name)
 
         # 出借人信息html文件
@@ -139,6 +140,6 @@ def generate_html_result(success_folder, failed_folder, file_path):
         # TODO 出借人合同URL数组，需要进一步处理，这里只是URL字符串
         data_array = [line_data[0], line_data[1], line_data[2], line_data[4], line_data[5], line_data[6]]
         # 调用生成出借人信息html函数
-        # generate_info_html(success_folder, failed_folder, csv_file_name, data_array)
+        generate_info_html(success_folder, failed_folder, csv_file_name, data_array)
         # 调用生成出借人合同html函数
-        generate_contact_html(success_folder, failed_folder, csv_file_name, data_array)
+        # generate_contact_html(success_folder, failed_folder, csv_file_name, data_array)

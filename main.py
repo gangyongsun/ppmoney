@@ -21,38 +21,38 @@ info_contact_result_folder_4_anxin = CONFIG.info_contact_result_folder_4_anxin
 csv_analysis_failed_folder_4_anxin = CONFIG.csv_analysis_failed_folder_4_anxin
 
 if __name__ == "__main__":
-    # # 第一步，生成自助投、安心投基础csv文件
-    # print('============1.自助投、安心投基础csv文件生成开始============')
-    # # 自助投、安心投基础csv文件生成目录
-    # basic_csv_folder = CONFIG.basic_csv_folder
-    #
-    # # 安心投
-    # an_xin_tou_total_record = 1
-    # an_xin_tou_project_type = CONFIG.an_xin_tou_project_type
-    # generate_basic_csv(an_xin_tou_total_record, an_xin_tou_project_type, basic_csv_folder)
-    #
-    # # 自助投
-    # zi_zhu_tou_total_record = 0
-    # zi_zhu_tou_project_type = CONFIG.zi_zhu_tou_project_type
-    # generate_basic_csv(zi_zhu_tou_total_record, zi_zhu_tou_project_type, basic_csv_folder)
-    # print('============1.自助投、安心投基础csv文件生成结束============')
-    #
-    # # 第二步，生成债权明细出借人csv文件
-    # print('============2.债权明细出借人csv文件生成开始============')
-    # # 债权明细配置信息文件
-    # # 安心投
-    # csv_file_path_anxin = CONFIG.basic_csv_folder + '/安心投.csv'
-    # if os.path.exists(csv_file_path_anxin):
-    #     csv_file_anxin = csv.reader(open(csv_file_path_anxin, 'r', encoding='utf-8-sig'))
-    #     generate_credit_csv(csv_file_anxin, credit_generated_csv_folder_4_anxin)
-    #
-    # # 自助投
-    # csv_file_path_zizhu = CONFIG.basic_csv_folder + '/自助投.csv'
-    # if os.path.exists(csv_file_path_zizhu):
-    #     csv_file_zizhu = csv.reader(open(csv_file_path_zizhu, 'r', encoding='utf-8-sig'))
-    #     generate_credit_csv(csv_file_zizhu, credit_generated_csv_folder_4_zizhu)
-    #
-    # print('============2.债权明细出借人csv文件生成结束============')
+    # 第一步，生成自助投、安心投基础csv文件
+    print('============1.自助投、安心投基础csv文件生成开始============')
+    # 自助投、安心投基础csv文件生成目录
+    basic_csv_folder = CONFIG.basic_csv_folder
+
+    # 安心投
+    an_xin_tou_total_record = 16
+    an_xin_tou_project_type = CONFIG.an_xin_tou_project_type
+    generate_basic_csv(an_xin_tou_total_record, an_xin_tou_project_type, basic_csv_folder)
+
+    # 自助投
+    zi_zhu_tou_total_record = 18
+    zi_zhu_tou_project_type = CONFIG.zi_zhu_tou_project_type
+    generate_basic_csv(zi_zhu_tou_total_record, zi_zhu_tou_project_type, basic_csv_folder)
+    print('============1.自助投、安心投基础csv文件生成结束============')
+
+    # 第二步，生成债权明细出借人csv文件
+    print('============2.债权明细出借人csv文件生成开始============')
+    # 债权明细配置信息文件
+    # 安心投
+    csv_file_path_anxin = CONFIG.basic_csv_folder + '/安心投.csv'
+    if os.path.exists(csv_file_path_anxin):
+        csv_file_anxin = csv.reader(open(csv_file_path_anxin, 'r', encoding='utf-8-sig'))
+        generate_credit_csv(csv_file_anxin, credit_generated_csv_folder_4_anxin)
+
+    # 自助投
+    csv_file_path_zizhu = CONFIG.basic_csv_folder + '/自助投.csv'
+    if os.path.exists(csv_file_path_zizhu):
+        csv_file_zizhu = csv.reader(open(csv_file_path_zizhu, 'r', encoding='utf-8-sig'))
+        generate_credit_csv(csv_file_zizhu, credit_generated_csv_folder_4_zizhu)
+
+    print('============2.债权明细出借人csv文件生成结束============')
 
     # 第三步，遍历债权明细出借人csv文件生成结果
     mkdir(csv_analysis_failed_folder_4_anxin)
