@@ -36,6 +36,20 @@ cat_url_5 = CONFIG.borrower_contact_project_type
 cat_url_6 = CONFIG.borrower_contact_asset_type
 
 
+def get_project_count(project_type):
+    """
+    根据投资类型，获取投资笔数
+    :param project_type:
+    :return:
+    """
+    # 毫秒级时间戳
+    timestamp = int(round(time.time() * 1000))
+    url = 'https://www.ppmoney.com/stepup/InvestProjectList?type=1&pageIndex=1&pageSize=6&projectType=' + str(project_type) + '&_=' + str(timestamp)
+    response = get_html_data(url)
+    json_data = json.loads(response[0])
+    return json_data['Data']['TotalCount']
+
+
 def generate_basic_csv(total_record, project_type, target_folder):
     """
     生成安心投、自助投基础csv文件

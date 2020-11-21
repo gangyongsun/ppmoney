@@ -21,4 +21,4 @@ if __name__ == '__main__':
     for i in range(0, size):
         pool.apply_async(word, (slip_files, i,))  # 异步执行，非阻塞方式
     pool.close()  # 关闭进程池，关闭之后，不能再向进程池中添加进程
-    pool.join()  # 当进程池中的所有进程执行完后，主进程才可以继续执行。
+    pool.join()  # 当进程池中的所有进程执行完后，主进程才可以继续执行

@@ -126,8 +126,8 @@ def generate_html_result(success_folder, failed_folder, file_path):
     csv_file = csv.reader(open(file_path, 'r', encoding='utf-8-sig'))
     # TODO 出借人合同URL数组，需要进一步处理，这里只是URL字符串
     for line_data in islice(csv_file, 1, None):
-        # time.sleep(1)
+        time.sleep(5)
         # 调用生成出借人信息html函数
         generate_info_html(success_folder, failed_folder, csv_file_name, line_data)
         # 调用生成出借人合同html函数
-        # generate_contact_html(success_folder, failed_folder, csv_file_name, line_data)
+        generate_contact_html(success_folder, failed_folder, csv_file_name, line_data)
