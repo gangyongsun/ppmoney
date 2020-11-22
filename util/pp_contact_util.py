@@ -113,7 +113,7 @@ def generate_info_html(success_folder, failed_folder, csv_file_name, line_data):
         write_file(html_content, borrower_info_file_name, encoding=encoding, mode='w')
 
 
-def generate_html_result(success_folder, failed_folder, file_path):
+def generate_info_html_result(success_folder, failed_folder, file_path):
     """
     统一调用
     :param success_folder: 执行成功目录
@@ -129,5 +129,19 @@ def generate_html_result(success_folder, failed_folder, file_path):
         time.sleep(5)
         # 调用生成出借人信息html函数
         generate_info_html(success_folder, failed_folder, csv_file_name, line_data)
+
+def generate_contact_html_result(success_folder, failed_folder, file_path):
+    """
+    统一调用
+    :param success_folder: 执行成功目录
+    :param failed_folder: 执行失败目录
+    :param file_path: csv文件全路径名
+    :return:
+    """
+    # 不带扩展名
+    csv_file_name = os.path.basename(file_path).split('.')[0]
+    csv_file = csv.reader(open(file_path, 'r', encoding='utf-8-sig'))
+    # TODO 出借人合同URL数组，需要进一步处理，这里只是URL字符串
+    for line_data in islice(csv_file, 1, None):
         # 调用生成出借人合同html函数
         generate_contact_html(success_folder, failed_folder, csv_file_name, line_data)

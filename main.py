@@ -3,14 +3,19 @@
 
 import os
 import csv
+import platform
 
 from util.common_util import mkdir
-from util.pp_contact_util import generate_html_result
+from util.pp_contact_util import generate_info_html_result
+from util.pp_contact_util import generate_contact_html_result
 from util.pp_csv_util import get_project_count
 from util.pp_csv_util import generate_basic_csv
 from util.pp_csv_util import generate_credit_csv
 from util.common_util import walk_file
 import config.config as CONFIG
+
+# 系统类型
+os_type = platform.system()
 
 # csv文件目录
 # 自助投目录
@@ -69,7 +74,7 @@ def build_csv_step2(target_folder):
 
 def step3():
     """
-    生成出借人信息和合同
+    生成出借人合同
     :return:
     """
     # 第三步，遍历债权明细出借人csv文件生成结果
@@ -79,22 +84,48 @@ def step3():
     # 安心投
     anxin_csv_file_array = walk_file(credit_generated_csv_folder_4_anxin)
     for file_path in anxin_csv_file_array:
-        print('============开始解析：【' + file_path + '】 生成出借人信息、合同html============')
-        generate_html_result(info_contact_result_folder_4_anxin, csv_analysis_failed_folder_4_anxin, file_path)
-        print('============结束解析：【' + file_path + '】 生成出借人信息、合同html============')
+        print('============开始解析：【' + file_path + '】 生成出借人合同html============')
+        generate_contact_html_result(info_contact_result_folder_4_anxin, csv_analysis_failed_folder_4_anxin, file_path)
+        print('============结束解析：【' + file_path + '】 生成出借人合同html============')
 
     # 自助投
     zizhu_csv_file_array = walk_file(credit_generated_csv_folder_4_zizhu)
     for file_path in zizhu_csv_file_array:
-        print('============开始解析：【' + file_path + '】 生成出借人信息、合同html============')
-        generate_html_result(info_contact_result_folder_4_zizhu, csv_analysis_failed_folder_4_zizhu, file_path)
-        print('============结束解析：【' + file_path + '】 生成出借人信息、合同html============')
+        print('============开始解析：【' + file_path + '】 生成出借人合同html============')
+        generate_contact_html_result(info_contact_result_folder_4_zizhu, csv_analysis_failed_folder_4_zizhu, file_path)
+        print('============结束解析：【' + file_path + '】 生成出借人合同html============')
+
+
+def step4():
+    """
+    生成出借人信息
+    :return:
+    """
+    # 第三步，遍历债权明细出借人csv文件生成结果
+    mkdir(csv_analysis_failed_folder_4_anxin)
+    mkdir(csv_analysis_failed_folder_4_zizhu)
+
+    # 安心投
+    anxin_csv_file_array = walk_file(credit_generated_csv_folder_4_anxin)
+    for file_path in anxin_csv_file_array:
+        print('============开始解析：【' + file_path + '】 生成出借人信息html============')
+        generate_info_html_result(info_contact_result_folder_4_anxin, csv_analysis_failed_folder_4_anxin, file_path)
+        print('============结束解析：【' + file_path + '】 生成出借人信息html============')
+
+    # 自助投
+    zizhu_csv_file_array = walk_file(credit_generated_csv_folder_4_zizhu)
+    for file_path in zizhu_csv_file_array:
+        print('============开始解析：【' + file_path + '】 生成出借人信息html============')
+        generate_info_html_result(info_contact_result_folder_4_zizhu, csv_analysis_failed_folder_4_zizhu, file_path)
+        print('============结束解析：【' + file_path + '】 生成出借人信息html============')
 
 
 if __name__ == "__main__":
     # 第一步，生成自助投、安心投基础csv文件
-    build_csv_step1(CONFIG.basic_csv_folder)
+    # build_csv_step1(CONFIG.basic_csv_folder)
     # 第二步，生成债权明细出借人csv文件
-    build_csv_step2(CONFIG.basic_csv_folder)
-    # 第三步，遍历债权明细出借人csv文件生成结果
+    # build_csv_step2(CONFIG.basic_csv_folder)
+    # 第三步，遍历债权明细出借人合同csv文件生成结果
     step3()
+    # 第三步，遍历债权明细出借人信息csv文件生成结果
+    step4()
