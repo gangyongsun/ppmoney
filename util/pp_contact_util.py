@@ -105,7 +105,7 @@ def generate_info_html(success_folder, failed_folder, csv_file_name, line_data):
         write_file(csv_file_name + ':第[' + borrower_no + ']行\n', failed_folder + '/' + csv_file_name + '.log', encoding='utf-8', mode='a')
     else:
         # 文件夹
-        folder_name = success_folder + '/' + csv_file_name + str(borrower_no) + '-' + str(borrower_value) + '-' + str(borrower_family_name)
+        folder_name = success_folder + '/' + csv_file_name + '/' + str(borrower_no) + '-' + str(borrower_value) + '-' + str(borrower_family_name)
         mkdir(folder_name)
         # 出借人信息html文件
         borrower_info_file_name = folder_name + '/' + CONFIG.borrower_html
@@ -129,6 +129,7 @@ def generate_info_html_result(success_folder, failed_folder, file_path):
         time.sleep(5)
         # 调用生成出借人信息html函数
         generate_info_html(success_folder, failed_folder, csv_file_name, line_data)
+
 
 def generate_contact_html_result(success_folder, failed_folder, file_path):
     """
