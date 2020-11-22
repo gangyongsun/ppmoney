@@ -22,3 +22,22 @@ import os
 # # print("platform.system_alias()=%s", platform.system_alias())
 # print("platform.version()=%s", platform.version())
 # print("platform.uname()=%s", platform.uname())
+
+import sys
+
+# print(sys.platform)
+# 系统类型
+os_type = platform.system()
+if os_type == 'Windows':
+    print(os_type)
+elif os_type == 'Mac':
+    print(os_type)
+else:
+    print('others')
+#
+# if sys.platform.startwith('linux'):
+#     # linux 代码
+#     pass
+# elif sys.platform.startwith('freebsd'):
+#     # freebsd 代码
+#     pass
