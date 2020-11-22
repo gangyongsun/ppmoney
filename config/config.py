@@ -40,26 +40,11 @@ borrower_contact_share_type = '&type='
 borrower_contact_project_type = '&projectType='
 borrower_contact_asset_type = '&assetType='
 
-# 程序生成的自助投csv文件目录
-# credit_generated_csv_folder_4_zizhu_mac = '/Users/alvin/Downloads/pp/csv/自助投'
-# credit_generated_csv_folder_4_anxin_mac = '/Users/alvin/Downloads/pp/csv/安心投'
-
-credit_generated_csv_folder_4_zizhu = r'C:\pp\自助投'
-credit_generated_csv_folder_4_anxin = r'C:\pp\安心投'
-
-# csv文件解析失败记录目录
-# csv_analysis_failed_folder_4_zizhu_mac = '/Users/alvin/Downloads/pp/csv/自助投/failed'
-# info_contact_result_folder_4_zizhu_mac = '/Users/alvin/Downloads/pp/csv/自助投'
-
-csv_analysis_failed_folder_4_zizhu = r'C:\pp\自助投\failed'
-info_contact_result_folder_4_zizhu = r'C:\pp\自助投'
-
-# csv文件解析失败记录目录
-# csv_analysis_failed_folder_4_anxin_mac = '/Users/alvin/Downloads/pp/csv/安心投/failed'
-# info_contact_result_folder_4_anxin_mac = '/Users/alvin/Downloads/pp/csv/安心投'
-
-csv_analysis_failed_folder_4_anxin = r'C:\pp\安心投\failed'
-info_contact_result_folder_4_anxin = r'C:\pp\安心投'
+# 程序生成的csv文件目录
+target_folder_4_zizhu_mac = '/Users/alvin/Downloads/pp/csv/自助投'
+target_folder_4_anxin_mac = '/Users/alvin/Downloads/pp/csv/安心投'
+target_folder_4_zizhu = r'C:\pp\csv\自助投'
+target_folder_4_anxin = r'C:\pp\csv\安心投'
 
 # 自助投project type
 zi_zhu_tou_project_type = 104043
