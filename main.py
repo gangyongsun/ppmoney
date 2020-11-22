@@ -129,11 +129,11 @@ def step4():
 
 
 if __name__ == "__main__":
-    # # 第一步，生成自助投、安心投基础csv文件
-    # build_csv_step1(CONFIG.basic_csv_folder)
-    # # 第二步，生成债权明细出借人csv文件
-    # build_csv_step2(CONFIG.basic_csv_folder)
-    # # 第三步，遍历债权明细出借人合同csv文件生成结果
-    # step3()
+    # 第一步，生成自助投、安心投基础csv文件
+    build_csv_step1(CONFIG.basic_csv_folder)
+    # 第二步，生成债权明细出借人csv文件
+    build_csv_step2(CONFIG.basic_csv_folder)
+    # 第三步，遍历债权明细出借人合同csv文件生成结果
+    step3()
     # 第四步，遍历债权明细出借人信息csv文件生成结果
     step4()
