@@ -71,7 +71,7 @@ def generate_contact_html(success_folder, failed_folder, csv_file_name, line_dat
         return_value = generate_contact(sub_url, borrower_contract_url_bak_array[index], folder_name)
         if not return_value:
             print(csv_file_name + ' 文件的第：' + borrower_no + ' 行，出借人[' + borrower_family_name + ']出借人合同获取失败！')
-            write_file(line_data, failed_folder + '/' + csv_file_name + '-failed.csv', encoding='utf-8', mode='a')
+            write_file(csv_file_name + ':第[' + borrower_no + ']行\n', failed_folder + '/' + csv_file_name + '.log', encoding='utf-8', mode='a')
 
 
 def generate_info_html(success_folder, failed_folder, csv_file_name, line_data):
@@ -105,7 +105,7 @@ def generate_info_html(success_folder, failed_folder, csv_file_name, line_data):
         write_file(csv_file_name + ':第[' + borrower_no + ']行\n', failed_folder + '/' + csv_file_name + '.log', encoding='utf-8', mode='a')
     else:
         # 文件夹
-        folder_name = success_folder + '/' + csv_file_name + '/出借人信息/' + str(borrower_no) + '-' + str(borrower_value) + '-' + str(borrower_family_name)
+        folder_name = success_folder + '/' + csv_file_name + str(borrower_no) + '-' + str(borrower_value) + '-' + str(borrower_family_name)
         mkdir(folder_name)
         # 出借人信息html文件
         borrower_info_file_name = folder_name + '/' + CONFIG.borrower_html
