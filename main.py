@@ -28,7 +28,7 @@ if os_type == 'Windows':
     # 安心投目录
     target_folder_4_anxin = CONFIG.target_folder_4_anxin
     failed_folder_4_anxin = target_folder_4_anxin + r'\failed'
-elif os_type == 'Mac':
+elif os_type == 'Darwin':
     # 自助投目录
     target_folder_4_zizhu = CONFIG.target_folder_4_zizhu_mac
     failed_folder_4_zizhu = target_folder_4_zizhu + '/failed'
