@@ -30,7 +30,7 @@ import sys
 os_type = platform.system()
 if os_type == 'Windows':
     print(os_type)
-elif os_type == 'Mac':
+elif os_type == 'Darwin':
     print(os_type)
 else:
     print('others')
